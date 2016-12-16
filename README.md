@@ -3,6 +3,8 @@ Asteroids code for Challenge #N
 
 Forked early after initial project commit.
 
+[HTML Preview](http://htmlpreview.github.io/?https://github.com/davidjmerritt/Asteroids/blob/gh-pages/index.html)
+
 ### Additions
 - Instructions
 - Levels - Add 1 new asteroid per level
