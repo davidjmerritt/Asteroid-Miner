@@ -1,5 +1,6 @@
 # Asteroids
 Asteroids code for Challenge #N
+
 Forked early after initial project commit.
 
 ### Additions
