@@ -10,9 +10,15 @@
   <script language="javascript" type="text/javascript" src="menu.js"></script>
   <script language="javascript" type="text/javascript" src="power.js"></script>
   <script language="javascript" type="text/javascript" src="energy.js"></script>
-  <style> body {padding: 0; margin: 0;} </style>
+  <script language="javascript" type="text/javascript" src="controller.js"></script>
+  <style>body {padding: 0; margin: 0;}</style>
 </head>
-
 <body>
 </body>
 </html>
+<script>
+document.ontouchstart = function(evt){
+  console.log(evt.pageX + "/" + evt.pageY);
+  // OH NO! These values are blank, this must be a bug
+}
+</script>

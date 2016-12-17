@@ -1,4 +1,5 @@
 var ship;
+var controller;
 var powers = [];
 var energy = [];
 var asteroids = [];
@@ -15,6 +16,33 @@ var chanceEnergy = 2;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   ship = new Ship();
+  // controller = new Controller();
+
+  button = createButton('LEFT');
+  button.position(50, height-100);
+  button.mousePressed(function(){ship.setRotation(-0.1);});
+
+  button = createButton('RIGHT');
+  button.position(125, height-100);
+  button.mousePressed(function(){ship.setRotation(0.1);});
+
+  button = createButton('FIRE');
+  button.position(width-175, height-100);
+  button.mousePressed(function(){lasers.push(new Laser(ship.pos, ship.heading, laserSize));});
+
+  button = createButton('BOOST');
+  button.position(width-100, height-100);
+  button.mousePressed(function(){ship.boosting(true);});
+
+  button = createButton('START');
+  button.position(width/2-25, height-100);
+  button.mousePressed(function(){
+    numberOfAsteroids += 1;
+    gameStarted = true;
+    ship.isAlive = true;
+    reset();
+  });
+
   reset();
 }
 
@@ -139,6 +167,11 @@ function draw() {
   }
 }
 
+function mouseReleased() {
+    ship.setRotation(0);
+    ship.boosting(false);
+}
+
 function keyReleased() {
   ship.setRotation(0);
   ship.boosting(false);
@@ -160,3 +193,8 @@ function keyPressed() {
     ship.boosting(true);
   }
 }
+
+// function touchStarted() {
+//   console.log(true);
+//   return true;
+// }
