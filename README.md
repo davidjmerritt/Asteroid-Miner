@@ -5,12 +5,12 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 [HTML Preview](http://htmlpreview.github.io/?https://github.com/davidjmerritt/Asteroids/blob/gh-pages/index.html)
 
 ### Instructions
-  Asteroids
-  SPACEBAR = FIRE/START
-  ARROW-UP = BOOST
-  ARROW-DOWN = PAUSE
-  ARROW-LEFT = ROTATE LEFT
-  ARROW-RIGHT = ROTATE RIGHT
+    Asteroids
+    SPACEBAR = FIRE/START
+    ARROW-UP = BOOST
+    ARROW-DOWN = PAUSE
+    ARROW-LEFT = ROTATE LEFT
+    ARROW-RIGHT = ROTATE RIGHT
 
 ### Additions
 - Instructions
