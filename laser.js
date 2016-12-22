@@ -4,10 +4,13 @@ function Laser(spos, angle, lSize) {
   this.lSize = lSize;
   this.vel.mult(10);
   this.col = (255,255,255);
+  this.dist = 0;
 
   this.update = function() {
+    this.dist += 1;
     this.pos.add(this.vel);
   }
+
   this.render = function() {
     push();
     stroke(this.col);

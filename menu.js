@@ -4,7 +4,7 @@ function Menu() {
   this.col = (255,255,255);
 
   this.gameStart = function() {
-    this.message = "Asteroids\n\nSPACEBAR = FIRE\nARROW-UP = BOOST\nARROW-LEFT = ROTATE LEFT\nARROW-RIGHT = ROTATE RIGHT";
+    this.message = "Asteroids\n\nSPACEBAR = FIRE/START\nARROW-UP = BOOST\nARROW-DOWN = PAUSE\nARROW-LEFT = ROTATE LEFT\nARROW-RIGHT = ROTATE RIGHT";
   }
 
   this.gamePlay = function() {

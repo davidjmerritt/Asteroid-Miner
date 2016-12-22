@@ -13,13 +13,17 @@ Forked early after initial project commit.
 - Power-Up - 20% chance spawn per level
 - Energy - 50% chance spawn per level
 - Changed color of ship
+- Decrease range of laser
+- Added "R" Increase range of laser
+- Added "Pause"
+- Added overlay controller for usage on mobile
 
 ### Ideas
-- Decrease range of laser
-- Fix the game canvas dimensions
-- Add overlay controller for usage on mobile
-- Create more power-ups: increase range of laser, rapid fire, spread, temporary invincibility, grenade, faster boost.
+- Create more power-ups: rapid fire, spread, temporary invincibility, grenade, faster boost.
+- Create negative power-ups: same use lower case "r" vs "R" for laser
 - Add purchase options: after 5 levels get store level where you can trade points for power-ups.
+- Leaderboard - 3 character - Top 10 saved to DB on Firebase...
+- On game over ability to post to Twitter.
 
 ### Changes
 - Power-ups should spawn out of breaking up asteroids

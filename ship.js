@@ -13,6 +13,13 @@ function Ship() {
     this.r += 5;
   }
 
+  this.weaken = function() {
+    this.r -= 5;
+    if (this.r < 5) {
+      ship.explode();
+    }
+  }
+
   this.explode = function() {
       if (this.r <= 5) {
         this.r = this.defaultR;
