@@ -39,6 +39,7 @@
   </style>
 </head>
 <body>
+  <input id="val" type="text"></input>
 </body>
 </html>
 <script>
@@ -60,7 +61,11 @@
       });
   };
 })(jQuery);
-$( document ).ready(function() {
+$(document).on('pageinit',"#status_page", function(){\
     $("body").nodoubletapzoom();
+    $(".content").on("click", "button", function() {
+        var curr_val = parseInt($("#val").text());
+        $("#val").text(curr_val + 1);
+    });
 });
 </script>
