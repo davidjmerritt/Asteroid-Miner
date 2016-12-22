@@ -7,6 +7,10 @@
     if(/iPad/i.test(navigator.userAgent)) {
       var supportedMobileDevice = true;
     } // Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini
+    var supportedBrowser = false;
+    if(/Chrome|Safari|Firefox/i.test(navigator.userAgent)) {
+      var supportedBrowser = true;
+    }
     console.log(supportedMobileDevice);
   </script>
   <script language="javascript" src="js/libraries/jquery-3.1.1.min.js"></script>
