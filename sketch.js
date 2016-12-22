@@ -16,7 +16,7 @@ var chanceEnergy = 2;
 var chanceRange = 2;
 var restarted = true;
 var paused = false;
-var iOS = true;
+// var iOS = true;
 
 function setup() {
   frameRate(60);
