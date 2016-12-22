@@ -49,6 +49,7 @@ function setup() {
         ship.isAlive = true;
         restarted = true;
         reset();
+      }
     });
   }
   reset();
