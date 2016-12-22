@@ -111,7 +111,7 @@ function draw() {
   menu.render();
 
   if (supportedMobileDevice == true || supportedBrowser == true) {
-    
+    // console.log(supportedMobileDevice,supportedBrowser);
     if (paused) { menu.gameScore('Paused'); } else {
       if (gameStarted == false) {
         menu.gameStart();
