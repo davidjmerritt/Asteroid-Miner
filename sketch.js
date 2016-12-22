@@ -18,6 +18,7 @@ var restarted = true;
 var paused = false;
 
 function setup() {
+  frameRate(60);
   createCanvas(windowWidth, windowHeight);
   ship = new Ship();
   // controller = new Controller();
