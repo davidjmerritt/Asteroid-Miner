@@ -60,11 +60,7 @@
       });
   };
 })(jQuery);
-$(document).on('pageinit',"#status_page", function(){
+$( document ).ready(function() {
     $("body").nodoubletapzoom();
-    $(".content").on("click", "#but", function() {
-        var curr_val = parseInt($("#val").text());
-        $("#val").text(curr_val + 1);
-    });
 });
 </script>
