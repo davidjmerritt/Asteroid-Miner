@@ -1,3 +1,5 @@
+(function(l){var i,s={touchend:function(){}};for(i in s)l.addEventListener(i,s)})(document); // sticky hover fix in iOS
+
 (function($) {
   var IS_IOS = /iphone|ipad/i.test(navigator.userAgent);
   $.fn.nodoubletapzoom = function() {
@@ -16,6 +18,8 @@
       });
   };
 })(jQuery);
+
+
 $( document ).ready(function() {
-    // $("body").nodoubletapzoom();
+    $("body").nodoubletapzoom();
 });
