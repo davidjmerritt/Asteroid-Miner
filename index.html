@@ -1,7 +1,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> -->
+  <meta name="viewport" content="user-scalable=no" />
   <script language="javascript" src="libraries/jquery-3.1.1.min.js"></script>
   <script>var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;</script>
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
@@ -52,7 +53,7 @@
           , dt = t2 - t1
           , fingers = e.originalEvent.touches.length;
         $(this).data('lastTouch', t2);
-        if (!dt || dt > 100 || fingers > 1) return; // not double-tap
+        if (!dt || dt > 500 || fingers > 1) return; // not double-tap
 
         e.preventDefault(); // double tap - prevent the zoom
         // also synthesize click events we just swallowed up
