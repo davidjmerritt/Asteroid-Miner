@@ -23,7 +23,7 @@ function setup() {
   ship = new Ship();
   // controller = new Controller();
 
-  if (iOS == true && iPad == true) {
+  if (supportedMobileDevice) {
     button = createButton('LEFT');
     button.position(50, height-125);
     button.mousePressed(function(){ship.setRotation(-0.1);});
@@ -53,6 +53,9 @@ function setup() {
         reset();
       }
     });
+  } else {
+    menu = new Menu();
+    menu.unSupportedDevice();
   }
   reset();
 }
@@ -276,9 +279,6 @@ function keyPressed() {
     if (gameStarted) {
       if (paused) { paused = false; } else { paused = true; }
     }
-  } else {
-    menu = new Menu();
-    menu.unSupportedDevice();
   }
 }
 

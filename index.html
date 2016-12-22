@@ -3,9 +3,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
   <script>
-    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    var iPad = /iPad/.test(navigator.userAgent) && !window.MSStream;
-    var iOther = /iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    var supportedMobileDevice = false;
+    if(/iPad/i.test(navigator.userAgent)) {
+      var supportedMobileDevice = true;
+    } // Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini
+    console.log(supportedMobileDevice);
   </script>
   <script language="javascript" src="js/libraries/jquery-3.1.1.min.js"></script>
   <script language="javascript" type="text/javascript" src="js/touch.js"></script>
