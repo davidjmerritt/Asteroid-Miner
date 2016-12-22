@@ -43,7 +43,7 @@ function setup() {
     button = createButton('START');
     button.position(width/2-25, height-100);
     button.mousePressed(function(){
-      if (gameStarted) { paused = true; } else {
+      if (gameStarted) { if (paused) { paused = false; } else { paused = true; } } else {
         numberOfAsteroids += 1;
         gameStarted = true;
         ship.isAlive = true;
