@@ -1,8 +1,16 @@
 # Asteroids
 
-Forked early after initial project commit from Asteroids Coding Challenge.
+Forked early after initial project commit from CodingRainbow/Asteroids project from Coding Challenge 45.
 
 [HTML Preview](http://htmlpreview.github.io/?https://github.com/davidjmerritt/Asteroids/blob/gh-pages/index.html)
+
+### Instructions
+  Asteroids
+  SPACEBAR = FIRE/START
+  ARROW-UP = BOOST
+  ARROW-DOWN = PAUSE
+  ARROW-LEFT = ROTATE LEFT
+  ARROW-RIGHT = ROTATE RIGHT
 
 ### Additions
 - Instructions
@@ -14,6 +22,8 @@ Forked early after initial project commit from Asteroids Coding Challenge.
 - Changed color of ship
 - Decrease range of laser
 - Added "R" Increase range of laser
+- Added "r" Decrease range of laser
+- Added "e" Decrease range of laser
 - Added "Pause"
 - Added overlay controller for usage on mobile
 
