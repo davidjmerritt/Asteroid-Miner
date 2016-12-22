@@ -3,6 +3,9 @@ function Menu() {
   this.fontFace = "Courier"
   this.col = (255,255,255);
 
+  this.unSupportedDevice = function() {
+    this.message = "You are currently using an unsupported device.  Try on an iPad Mini or Desktop.";
+  }
   this.gameStart = function() {
     this.message = "Asteroids\n\nSPACEBAR = FIRE/START\nARROW-UP = BOOST\nARROW-DOWN = PAUSE\nARROW-LEFT = ROTATE LEFT\nARROW-RIGHT = ROTATE RIGHT";
   }

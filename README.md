@@ -28,7 +28,7 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 - Added "r" Decrease range of laser
 - Added "e" Decrease range of laser
 - Added "Pause" feature
-- Added overlay controller for usage on mobile
+- Added overlay controller for usage on mobile (works best on iPad mini)
 - Fixed Double-tap on iOS zooms on buttons.
 
 
@@ -39,5 +39,6 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 - Leaderboard - 3 character - Top 10 saved to DB on Firebase...
 - On game over ability to post to Twitter.
 - Power-ups should spawn out of breaking up asteroids
+- Expand mobile support
 
 ### Bugs
