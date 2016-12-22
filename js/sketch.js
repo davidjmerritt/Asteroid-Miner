@@ -2,17 +2,25 @@ var ship;
 var controller;
 var powers = [];
 var energy = [];
+var type = [];
 var asteroids = [];
+var dust = [];
 var lasers = [];
 var menu;
 var gameStarted = false;
 var gameWin = false;
 var score = 0;
 var numberOfAsteroids = 0;
-var laserSize = 4;
-var laserRange = 20;
+var laserSize;
+var laserSizeStart = 4;
+var laserSizeInc = 10;
+var laserRange;
+var laserRangeMin = 5;
+var laserRangeStart = 10;
+var laserRangeInc = 30;
 var chancePower = 5;
 var chanceEnergy = 2;
+var chanceType = 2;
 var chanceRange = 2;
 var restarted = true;
 var paused = false;
@@ -34,7 +42,7 @@ function setup() {
 
     button = createButton('FIRE');
     button.position(width-215, height-125);
-    button.mousePressed(function(){lasers.push(new Laser(ship.pos, ship.heading, laserSize));});
+    button.mousePressed(function(){ fireLasers(); });
 
     button = createButton('BOOST');
     button.position(width-125, height-125);
@@ -61,16 +69,18 @@ function reset() {
   if (restarted == true) { numberOfAsteroids = 1; score = 0; }
   energyUp = [];
   energyDown = [];
+  typeAdd = [];
+  typeRemove = [];
   powers = [];
   rangeUp = [];
   rangeDown = [];
   asteroids = [];
   lasers = [];
-  laserRange = 20;
-  laserSize = 4;
+  laserRange = laserRangeStart;
+  laserSize = laserSizeStart;
   menu = new Menu();
   for (var i = 0; i < numberOfAsteroids; i++) {
-    asteroids.push(new Asteroid());
+    asteroids.push(new Asteroid);
   }
 
   if (int(random(0,chancePower)) == 0) {
@@ -89,6 +99,18 @@ function reset() {
     for (var i = 0; i < 1; i++) {
       energyDown.push(new Powerup());
       energyDown[i].t = "e";
+    }
+  }
+  if (int(random(0,chanceType)) == 0) {
+    for (var i = 0; i < 1; i++) {
+      typeAdd.push(new Powerup());
+      typeAdd[i].t = "T";
+    }
+  }
+  if (int(random(0,chanceType)) == 0) {
+    for (var i = 0; i < 1; i++) {
+      typeRemove.push(new Powerup());
+      typeRemove[i].t = "t";
     }
   }
   if (int(random(0,chanceRange)) == 0) {
@@ -151,10 +173,33 @@ function draw() {
             }
           }
 
+          for (var i = 0; i < typeAdd.length; i++) {
+            if (ship.hits(typeAdd[i])) {
+              typeAdd.splice(i, 1);
+              laserType = randomLaserType();
+            }
+            if (typeAdd.length > 0) {
+              typeAdd[i].render();
+              typeAdd[i].update();
+              typeAdd[i].edges();
+            }
+          }
+          for (var i = 0; i < typeRemove.length; i++) {
+            if (ship.hits(typeRemove[i])) {
+              typeRemove.splice(i, 1);
+              laserType = "NORMAL";
+            }
+            if (typeRemove.length > 0) {
+              typeRemove[i].render();
+              typeRemove[i].update();
+              typeRemove[i].edges();
+            }
+          }
+
           for (var i = 0; i < rangeUp.length; i++) {
             if (ship.hits(rangeUp[i])) {
               rangeUp.splice(i, 1);
-              laserRange += 10;
+              laserRange += laserRangeInc;
             }
             if (rangeUp.length > 0) {
               rangeUp[i].render();
@@ -166,9 +211,9 @@ function draw() {
           for (var i = 0; i < rangeDown.length; i++) {
             if (ship.hits(rangeDown[i])) {
               rangeDown.splice(i, 1);
-              laserRange -= 10;
-              if (laserRange < 20) {
-                laserRange = 10;
+              laserRange -= laserRangeInc;
+              if (laserRange < laserRangeMin) {
+                laserRange = laserRangeMin;
               }
             }
             if (rangeDown.length > 0) {
@@ -192,6 +237,9 @@ function draw() {
                     var newAsteroids = asteroids[j].breakup();
                     asteroids = asteroids.concat(newAsteroids);
                   }
+                  var dustVel = p5.Vector.add(lasers[i].vel.mult(0.2), asteroids[j].vel);
+                  var dustNum = ((asteroids[j].r*2) + 1) * 5;
+                  addDust(asteroids[j].pos, dustVel, dustNum);
                   asteroids.splice(j, 1);
                   lasers.splice(i, 1);
                   score += 1;
@@ -207,7 +255,7 @@ function draw() {
             powers[i].edges();
             if (ship.hits(powers[i])) {
               powers.splice(i, 1);
-              laserSize += 20;
+              laserSize += laserSizeInc;
             }
           }
 
@@ -226,10 +274,18 @@ function draw() {
             // var t = setTimeout(function(){
             //   clearTimeout(t);
             // },3000);
-
-
             ship.isAlive = true;
+          }
 
+          for (var i = dust.length - 1; i >= 0; i--) {
+            dust[i].update();
+            if (dust[i].transparency <= 0) {
+              dust.splice(i, 1);
+            }
+          }
+
+          for (var i = dust.length - 1; i >= 0; i--) {
+            dust[i].render();
           }
 
         } else {
@@ -270,8 +326,8 @@ function keyPressed() {
     restarted = true;
     reset();
   } else if (key == ' ' && gameStarted == true) {
-    console.log(gameStarted);
-    lasers.push(new Laser(ship.pos, ship.heading, laserSize));
+    // console.log(gameStarted);
+    fireLasers();
   } else if (keyCode == RIGHT_ARROW) {
     ship.setRotation(0.1);
   } else if (keyCode == LEFT_ARROW) {
