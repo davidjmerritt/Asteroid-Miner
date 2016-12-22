@@ -33,12 +33,14 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 
 
 ### Future Changes
+- Add better collision detection.
+- Add spin to asteroids
+- Power-ups spawn out of breaking up asteroids
+- Redesign ship: boost graphic, change look
 - Create more power-ups: rapid fire, spread, temporary invincibility, grenade, faster boost.
-- Create negative power-ups: same use lower case "r" vs "R" for laser
 - Add purchase options: after 5 levels get store level where you can trade points for power-ups.
 - Leaderboard - 3 character - Top 10 saved to DB on Firebase...
 - On game over ability to post to Twitter.
-- Power-ups should spawn out of breaking up asteroids
 - Expand mobile support
 
 ### Bugs
