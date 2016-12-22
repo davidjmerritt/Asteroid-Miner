@@ -1,7 +1,6 @@
 # Asteroids
-Asteroids code for Challenge #N
 
-Forked early after initial project commit.
+Forked early after initial project commit from Asteroids Coding Challenge.
 
 [HTML Preview](http://htmlpreview.github.io/?https://github.com/davidjmerritt/Asteroids/blob/gh-pages/index.html)
 
@@ -17,6 +16,9 @@ Forked early after initial project commit.
 - Added "R" Increase range of laser
 - Added "Pause"
 - Added overlay controller for usage on mobile
+
+### Bugs
+- Double-tap on iOS zooms on buttons.
 
 ### Ideas
 - Create more power-ups: rapid fire, spread, temporary invincibility, grenade, faster boost.
