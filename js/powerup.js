@@ -1,4 +1,4 @@
-function Powerup(pos, r) {
+function Powerup(pos) {
   if (pos) {
     this.pos = pos.copy();
   } else {

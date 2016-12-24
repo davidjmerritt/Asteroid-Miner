@@ -1,4 +1,4 @@
-# Asteroids
+# Asteroid Miner
 
 
 Forked early after initial project commit from CodingRainbow/Asteroids project from Coding Challenge 45.
@@ -7,10 +7,18 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 
 
 ### Instructions
-    Asteroids
+    ASTEROID MINER
+
+
+    BREAK ASTEROID = 1 POINT
+    COLLECT COAL = 5 POINTS
+    COLLECT IRON = 10 POINTS
+    COLLECT GOLD = 20 POINTS
+
+
     SPACEBAR = FIRE/START
-    ARROW-UP = BOOST
-    ARROW-DOWN = PAUSE
+    ARROW-UP,W = BOOST
+    ARROW-DOWN,V = PAUSE
     ARROW-LEFT = ROTATE LEFT
     ARROW-RIGHT = ROTATE RIGHT
 
@@ -37,10 +45,13 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 - Added "t" removes laser type
 - Added spread laser type
 - Added back gun laser type
+- Add shields to ship
+- Added ores: coal, iron, gold
 
 ### Future Changes
 - Power-ups spawn out of breaking up asteroids
-- Redesign ship: boost graphic, change look to be set of larger shield triangles with core solid (red?)
+- Redesign shield break up animation
+- Running into asteroid with ship breaks asteroid
 - Create more power-ups: rapid fire, temporary invincibility, grenade, faster boost, clear all
 - Add purchase options: after 5 levels get store level where you can trade points for power-ups
 - Leaderboard - 3 character - Top 10 saved to DB on Firebase...

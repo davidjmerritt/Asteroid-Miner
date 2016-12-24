@@ -1,13 +1,13 @@
 function Ship() {
   this.pos = createVector(width / 2, height / 2);
-  this.defaultR = 15;
+  this.defaultR = 5;
   this.r = this.defaultR;
   this.heading = 0;
   this.rotation = 0;
   this.vel = createVector(0, 0);
   this.isBoosting = false;
   this.isAlive = true;
-  this.col = (255,255,255);
+  this.col = "white";
 
   this.enhance = function() {
     this.r += 5;
@@ -21,11 +21,13 @@ function Ship() {
   }
 
   this.explode = function() {
+    if (shields.length == 0) {
       if (this.r <= 5) {
         this.r = this.defaultR;
         this.isAlive = false;
       } else {
         this.r -= 5;
+      }
     }
     this.pos = createVector(width / 2, height / 2);
     this.heading = 0;
@@ -50,9 +52,9 @@ function Ship() {
     this.vel.add(force);
   }
 
-  this.hits = function(asteroid) {
-    var d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
-    if (d < this.r + asteroid.r) {
+  this.hits = function(entity) {
+    var d = dist(this.pos.x, this.pos.y, entity.pos.x, entity.pos.y);
+    if (d < ((this.r * shields.length) + shieldPadding) + entity.r) {
       return true;
     } else {
       return false;
@@ -65,15 +67,6 @@ function Ship() {
     rotate(this.heading + PI / 2);
     fill(this.col);
     stroke(this.col);
-    // beginShape();
-    // for (var i = 0; i < 7; i++) {
-    //   var angle = map(i, 0, 7, 0, TWO_PI);
-    //   var r = 10
-    //   var x = r * cos(angle);
-    //   var y = r * sin(angle);
-    //   vertex(x, y);
-    // }
-    // endShape(CLOSE);
     triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
     pop();
   }

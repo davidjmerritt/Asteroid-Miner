@@ -9,6 +9,7 @@ function Laser(spos, angle, lSize) {
   this.update = function() {
     this.dist += 1;
     this.pos.add(this.vel);
+    this.col -= this.dist-5;
   }
 
   this.render = function() {
@@ -47,9 +48,7 @@ var laserType = "NORMAL";
 var laserTypes = ["SPREAD", "BACK"];
 
 function randomLaserType() {
-  console.log(Math.floor(Math.random() * laserTypes.length));
   var newType = laserTypes[Math.floor(Math.random() * laserTypes.length)];
-  console.log(newType);
   return newType;
 }
 

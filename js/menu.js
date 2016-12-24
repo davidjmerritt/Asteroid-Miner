@@ -7,7 +7,10 @@ function Menu() {
     this.message = "You are currently using an unsupported device.  Try on an iPad Mini or Desktop.";
   }
   this.gameStart = function() {
-    this.message = "Asteroids\n\nSPACEBAR = FIRE/START\nARROW-UP = BOOST\nARROW-DOWN = PAUSE\nARROW-LEFT = ROTATE LEFT\nARROW-RIGHT = ROTATE RIGHT";
+    this.message = "ASTEROID MINER\n\n"
+    this.message += "BREAK ASTEROID = 1 POINT\nCOLLECT COAL = 5 POINTS\nCOLLECT IRON = 10 POINTS\nCOLLECT GOLD = 20 POINTS\n\n"
+    this.message += "SPACEBAR = FIRE/START\nARROW-UP,W = BOOST\nARROW-DOWN,V = PAUSE\nARROW-LEFT = ROTATE LEFT\nARROW-RIGHT = ROTATE RIGHT\n\n";
+
   }
 
   this.gamePlay = function() {
@@ -32,12 +35,11 @@ function Menu() {
     var size = 24
     var x2 = 600;
     var x1 = (width/2) - (x2 / 2);
-    var y2 = size*10;
+    var y2 = size*20;
     var y1 = (height/2) - (y2 / 2);
     textAlign(CENTER);
     textFont(this.fontFace,size);
     text(this.message, x1, y1, x2, y2);
     pop();
   }
-
 }

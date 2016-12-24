@@ -10,7 +10,7 @@ var menu;
 var gameStarted = false;
 var gameWin = false;
 var score = 0;
-var numberOfAsteroids = 0;
+var numberOfAsteroids = 1;
 var laserSize;
 var laserSizeStart = 4;
 var laserSizeInc = 10;
@@ -66,7 +66,16 @@ function setup() {
 }
 
 function reset() {
-  if (restarted == true) { numberOfAsteroids = 1; score = 0; }
+  if (restarted == true) {
+    numberOfAsteroids = 1;
+    score = 0;
+    ores = [];
+    shields = [];
+    numberOfShields = 3;
+    laserType = "NORMAL";
+    createShields();
+    // createOreScore();
+  }
   energyUp = [];
   energyDown = [];
   typeAdd = [];
@@ -79,6 +88,12 @@ function reset() {
   laserRange = laserRangeStart;
   laserSize = laserSizeStart;
   menu = new Menu();
+
+  // CHEATS
+  // numberOfAsteroids = 10;
+  // laserRange = 100;
+  // laserSize = 20;
+
   for (var i = 0; i < numberOfAsteroids; i++) {
     asteroids.push(new Asteroid);
   }
@@ -128,6 +143,7 @@ function reset() {
 
 }
 
+// DRAW
 function draw() {
   background(0);
   menu.render();
@@ -143,6 +159,7 @@ function draw() {
           for (var i = 0; i < asteroids.length; i++) {
             if (ship.hits(asteroids[i])) {
               background(255,0,0);
+              shields.splice(0,1);
               ship.explode();
             }
             asteroids[i].render();
@@ -150,10 +167,27 @@ function draw() {
             asteroids[i].edges();
           }
 
+          for (var i = 0; i < ores.length; i++) {
+            if (ship.hits(ores[i])) {
+              score += ores[i].oreType.rarity;
+              ores.splice(i, 1);
+              break;
+            }
+            ores[i].render();
+            ores[i].update();
+            ores[i].edges();
+          }
+
+          // for (var i = 0; i < oreScore.length; i++) {
+          //   oreScore[i].render();
+          //   // console.log(i);
+          // }
+
           for (var i = 0; i < energyUp.length; i++) {
             if (ship.hits(energyUp[i])) {
               energyUp.splice(i, 1);
-              ship.enhance();
+              addShield();
+              // ship.enhance();
             }
             if (energyUp.length > 0) {
               energyUp[i].render();
@@ -164,7 +198,8 @@ function draw() {
           for (var i = 0; i < energyDown.length; i++) {
             if (ship.hits(energyDown[i])) {
               energyDown.splice(i, 1);
-              ship.weaken();
+              // ship.weaken();
+              shields.splice(0, 1);
             }
             if (energyDown.length > 0) {
               energyDown[i].render();
@@ -184,6 +219,7 @@ function draw() {
               typeAdd[i].edges();
             }
           }
+
           for (var i = 0; i < typeRemove.length; i++) {
             if (ship.hits(typeRemove[i])) {
               typeRemove.splice(i, 1);
@@ -223,6 +259,7 @@ function draw() {
             }
           }
 
+          // BREAK UP ASTEROIDS
           for (var i = lasers.length - 1; i >= 0; i--) {
             lasers[i].render();
             lasers[i].update();
@@ -236,10 +273,16 @@ function draw() {
                   if (asteroids[j].r > 10) {
                     var newAsteroids = asteroids[j].breakup();
                     asteroids = asteroids.concat(newAsteroids);
+                    var newOre = pickOre();
+                    if (newOre != false) {
+                      createOre(asteroids[j].pos,newOre);
+                    }
                   }
+
                   var dustVel = p5.Vector.add(lasers[i].vel.mult(0.2), asteroids[j].vel);
-                  var dustNum = ((asteroids[j].r*2) + 1) * 5;
+                  var dustNum = asteroids[j].r;
                   addDust(asteroids[j].pos, dustVel, dustNum);
+
                   asteroids.splice(j, 1);
                   lasers.splice(i, 1);
                   score += 1;
@@ -263,6 +306,13 @@ function draw() {
           ship.turn();
           ship.update();
           ship.edges();
+
+          for (var i = shields.length - 1; i >= 0; i--) {
+            shields[i].render();
+            shields[i].pos = ship.pos;
+            shields[i].heading = ship.heading;
+            shields[i].r = (ship.r * i)+shieldPadding;
+          }
 
           menu.gameScore('Level '+numberOfAsteroids+' | Score '+score);
 
@@ -332,9 +382,13 @@ function keyPressed() {
     ship.setRotation(0.1);
   } else if (keyCode == LEFT_ARROW) {
     ship.setRotation(-0.1);
-  } else if (keyCode == UP_ARROW || keyCode == '87') {
+  } else if (keyCode == UP_ARROW || keyCode == '87') { // w
     ship.boosting(true);
   } else if (keyCode == DOWN_ARROW) {
+    if (gameStarted) {
+      if (paused) { paused = false; } else { paused = true; }
+    }
+  } else if (keyCode == 86) { // v
     if (gameStarted) {
       if (paused) { paused = false; } else { paused = true; }
     }
