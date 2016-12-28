@@ -3,7 +3,7 @@
 
 Forked early after initial project commit from CodingRainbow/Asteroids project from Coding Challenge 45.
 
-[HTML Preview](http://davidjmerritt.github.io/Asteroids/)
+[HTML Preview](http://davidjmerritt.github.io/Asteroid-Miner/)
 
 
 ### Instructions
