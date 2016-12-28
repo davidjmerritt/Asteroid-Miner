@@ -1,29 +1,39 @@
-function Asteroid(pos, r) {
+function Tail(pos, r) {
   if (pos) {
     this.pos = pos.copy();
   } else {
     this.pos = createVector(random(width), random(height))
   }
-  if (r) {
-    this.r = r * 0.5;
-  } else {
-    this.r = random(15, 100);
-  }
-  this.col = (255,255,255);
+  this.r = 15;
+  this.col = 0;
   this.vel = p5.Vector.random2D();
   this.heading = 0 ;
-  this.rotationSpeed = random(.01,.05) ;
-  this.rotationDir = random(-1,1);
-  this.total = floor(random(5, 15));
+  this.rotationSpeed = .5 ;
+  this.rotationDir = 1;
+  this.total = 4;
+  this.xOffset = -5;
   this.offset = [];
   for (var i = 0; i < this.total; i++) {
     this.offset[i] = random(-this.r * 0.5, this.r * 0.5);
   }
 
   this.update = function() {
-    this.pos.add(this.vel);
-    this.heading += this.rotationSpeed * this.rotationDir;
+    this.pos = ship.pos;
+    this.heading = ship.heading;
+    this.r = 7;//ship.r //*shields.length-1;
+    this.xOffset = -40 //*shields.length;
+    for (var i = 0; i < this.total; i++) {
+      this.offset[i] = random(-this.r * 1, this.r );
+    }
+    // this.pos.add(this.vel);
+    // this.heading += this.rotationSpeed * this.rotationDir;
   }
+
+  // this.fire = function(f) {
+  //   if(f) {
+  //     this.
+  //   }
+  // }
 
   this.render = function() {
     push();
@@ -38,17 +48,10 @@ function Asteroid(pos, r) {
       var r = this.r + this.offset[i];
       var x = r * cos(angle);
       var y = r * sin(angle);
-      vertex(x, y);
+      vertex(x+this.xOffset, y);
     }
     endShape(CLOSE);
     pop();
-  }
-
-  this.breakup = function() {
-    var newA = [];
-    newA[0] = new Asteroid(this.pos, this.r);
-    newA[1] = new Asteroid(this.pos, this.r);
-    return newA;
   }
 
   this.edges = function() {

@@ -9,7 +9,7 @@ function Laser(spos, angle, lSize) {
   this.update = function() {
     this.dist += 1;
     this.pos.add(this.vel);
-    this.col -= this.dist-5;
+    // this.col -= this.dist-5;
   }
 
   this.render = function() {
@@ -56,10 +56,15 @@ function randomLaserType() {
 function fireLasers() {
   lasers.push(new Laser(ship.pos, ship.heading, laserSize));
   if (laserType == "SPREAD") {
+    laserSpread.setVolume(.5);
+    laserSpread.play();
     lasers.push(new Laser(ship.pos, ship.heading-.5, laserSize));
     lasers.push(new Laser(ship.pos, ship.heading+.5, laserSize));
   }
   if (laserType == "BACK") {
+    laserDouble.play();
     lasers.push(new Laser(ship.pos, ship.heading+3.1, laserSize));
+  } else {
+    laserNormal.play();
   }
 }

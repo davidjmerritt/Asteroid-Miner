@@ -24,12 +24,39 @@ var chanceType = 2;
 var chanceRange = 2;
 var restarted = true;
 var paused = false;
+var pointTally;
+var MEGAMAN = "snd/megaman/";
+var CONTRA = "snd/contra/";
+var ULTIMA_V = "snd/ultima_v/";
+var soundTrackVolume = .25;
+var cheatSeq = [];
+var backgroundColor = 0;
+
+function preload() {
+  soundTrack = loadSound(ULTIMA_V+'villager_tarantella.mp3');
+
+  pointTally = loadSound(MEGAMAN+'point_tally.wav');
+  laserNormal = loadSound(MEGAMAN+'enemy_shoot.wav');
+  laserDouble = loadSound(MEGAMAN+'enemy_shoot_double.wav');
+  laserSpread = loadSound(CONTRA+'spread.wav');
+  aquireOre = loadSound(MEGAMAN+'1up.wav');
+  asteroidExplode = loadSound(MEGAMAN+'explosion.wav');
+  grabberOn = loadSound(MEGAMAN+'pipi.wav');
+  shipHit = loadSound(MEGAMAN+'damage.wav');
+  aquirePowerup = loadSound(MEGAMAN+'bonus.wav');
+  losePowerup = loadSound(MEGAMAN+'bonus_r.wav');
+  fireJets = loadSound(MEGAMAN+'fire_clip.wav');
+  pauseSound = loadSound(MEGAMAN+'pause.wav');
+  gameOverSound = loadSound(MEGAMAN+'defeat.wav');
+}
+
 
 function setup() {
   frameRate(60);
   createCanvas(windowWidth, windowHeight);
   ship = new Ship();
-  // controller = new Controller();
+  tail = new Tail();
+  grabber = new Grabber();
 
   if (supportedMobileDevice) {
     button = createButton('LEFT');
@@ -74,7 +101,10 @@ function reset() {
     numberOfShields = 3;
     laserType = "NORMAL";
     createShields();
-    // createOreScore();
+    createStats();
+    soundTrack.stop();
+    soundTrack.setVolume(soundTrackVolume);
+    soundTrack.loop();
   }
   energyUp = [];
   energyDown = [];
@@ -88,11 +118,13 @@ function reset() {
   laserRange = laserRangeStart;
   laserSize = laserSizeStart;
   menu = new Menu();
+  stats = new Stats();
 
-  // CHEATS
-  // numberOfAsteroids = 10;
-  // laserRange = 100;
-  // laserSize = 20;
+  if(cheatSeq.compare([37, 39, 37, 39, 219, 221, 86])) {
+    console.log('You dirty cheater!');
+    cheats();
+    cheatSeq = [];
+  }
 
   for (var i = 0; i < numberOfAsteroids; i++) {
     asteroids.push(new Asteroid);
@@ -140,20 +172,24 @@ function reset() {
       rangeDown[i].t = "r";
     }
   }
-
 }
 
 // DRAW
 function draw() {
-  background(0);
+  background(backgroundColor);
   menu.render();
 
   if (supportedMobileDevice == true || supportedBrowser == true) {
     // console.log(supportedMobileDevice,supportedBrowser);
-    if (paused) { menu.gameScore('Paused'); } else {
+    if (paused) {
+      menu.gameScore('Paused');
+      soundTrack.setVolume(0);
+    } else {
       if (gameStarted == false) {
         menu.gameStart();
+        soundTrack.setVolume(0);
       } else {
+        soundTrack.setVolume(soundTrackVolume);
         if (ship.isAlive) {
           //menu.gamePlay();
           for (var i = 0; i < asteroids.length; i++) {
@@ -161,6 +197,7 @@ function draw() {
               background(255,0,0);
               shields.splice(0,1);
               ship.explode();
+              shipHit.play();
             }
             asteroids[i].render();
             asteroids[i].update();
@@ -168,14 +205,36 @@ function draw() {
           }
 
           for (var i = 0; i < ores.length; i++) {
-            if (ship.hits(ores[i])) {
-              score += ores[i].oreType.rarity;
-              ores.splice(i, 1);
-              break;
+            if (grabber.hits(ores[i])) {
+              oreBurn[i] += 1;
+              grabber.strokeColor = [155+oreBurn[i],155,255-oreBurn[i]];
+              // ores[i].burning(true);
+              console.log(oreBurn[i]);
+              if (oreBurn[i] > ores[i].oreType.durability) {
+                var dustVel = p5.Vector.add(grabber.vel.mult(0.2), ores[i].vel);
+                var dustNum = ores[i].r*100;
+                addDust(ores[i].pos, dustVel, dustNum);
+
+                score += ores[i].oreType.rarity;
+                oresCollected[ores[i].oreType.name] += round(ores[i].r);
+                ores.splice(i, 1);
+                oreBurn[i] = 0;
+                // pointTally.setVolume(0.5);
+                aquireOre.play();
+                break;
+              }
+            } else {
+              // ores[i].burning(false);
+              oreBurn[i] = 0;
             }
             ores[i].render();
             ores[i].update();
             ores[i].edges();
+
+            ores[i].r -= ores[i].oreType.rate_of_decay;
+            if (ores[i].r < 1) {
+              ores.splice(i, 1);
+            }
           }
 
           // for (var i = 0; i < oreScore.length; i++) {
@@ -185,6 +244,7 @@ function draw() {
 
           for (var i = 0; i < energyUp.length; i++) {
             if (ship.hits(energyUp[i])) {
+              aquirePowerup.play();
               energyUp.splice(i, 1);
               addShield();
               // ship.enhance();
@@ -197,6 +257,7 @@ function draw() {
           }
           for (var i = 0; i < energyDown.length; i++) {
             if (ship.hits(energyDown[i])) {
+              losePowerup.play();
               energyDown.splice(i, 1);
               // ship.weaken();
               shields.splice(0, 1);
@@ -210,6 +271,7 @@ function draw() {
 
           for (var i = 0; i < typeAdd.length; i++) {
             if (ship.hits(typeAdd[i])) {
+              aquirePowerup.play();
               typeAdd.splice(i, 1);
               laserType = randomLaserType();
             }
@@ -222,6 +284,7 @@ function draw() {
 
           for (var i = 0; i < typeRemove.length; i++) {
             if (ship.hits(typeRemove[i])) {
+              losePowerup.play();
               typeRemove.splice(i, 1);
               laserType = "NORMAL";
             }
@@ -234,6 +297,7 @@ function draw() {
 
           for (var i = 0; i < rangeUp.length; i++) {
             if (ship.hits(rangeUp[i])) {
+              aquirePowerup.play();
               rangeUp.splice(i, 1);
               laserRange += laserRangeInc;
             }
@@ -246,6 +310,7 @@ function draw() {
 
           for (var i = 0; i < rangeDown.length; i++) {
             if (ship.hits(rangeDown[i])) {
+              losePowerup.play();
               rangeDown.splice(i, 1);
               laserRange -= laserRangeInc;
               if (laserRange < laserRangeMin) {
@@ -270,6 +335,7 @@ function draw() {
             } else {
               for (var j = asteroids.length - 1; j >= 0; j--) {
                 if (lasers[i].hits(asteroids[j])) {
+                  asteroidExplode.play();
                   if (asteroids[j].r > 10) {
                     var newAsteroids = asteroids[j].breakup();
                     asteroids = asteroids.concat(newAsteroids);
@@ -286,6 +352,7 @@ function draw() {
                   asteroids.splice(j, 1);
                   lasers.splice(i, 1);
                   score += 1;
+                  oresCollected["asteroid"] += 1
                   break;
                 }
               }
@@ -302,10 +369,16 @@ function draw() {
             }
           }
 
+          tail.render();
+          tail.update();
+
           ship.render();
           ship.turn();
           ship.update();
           ship.edges();
+
+          grabber.render();
+          grabber.update();
 
           for (var i = shields.length - 1; i >= 0; i--) {
             shields[i].render();
@@ -313,8 +386,8 @@ function draw() {
             shields[i].heading = ship.heading;
             shields[i].r = (ship.r * i)+shieldPadding;
           }
-
-          menu.gameScore('Level '+numberOfAsteroids+' | Score '+score);
+          menu.gameScore('');
+          // menu.gameScore('Level '+numberOfAsteroids+' | Score '+score);
 
           if (asteroids.length <= 0) {
             // menu.gameWin();
@@ -339,16 +412,8 @@ function draw() {
           }
 
         } else {
-          menu.gameOver('Level '+numberOfAsteroids+' | Score '+score);
-          gameStarted = false;
-          // var t = setTimeout(function(){
-          //   // gameStarted = false;
-          //   numberOfAsteroids = 0;
-          //   gameStarted = false;
-          //   ship.isAlive = false;
-          //   reset();
-          //   clearTimeout(t);
-          // },3000);
+          menu.gameOver();
+          soundTrack.stop();
         }
       }
     }
@@ -356,43 +421,77 @@ function draw() {
       menu = new Menu();
       menu.unSupportedDevice();
     }
+
+    showStats();
 }
 
 function mouseReleased() {
     ship.setRotation(0);
     ship.boosting(false);
+    fireJets.stop();
 }
 
 function keyReleased() {
-  ship.setRotation(0);
-  ship.boosting(false);
+  if (keyCode == 219) {
+    grabber.grabbing(false);
+  } else {
+    ship.setRotation(0);
+    ship.boosting(false);
+    fireJets.stop();
+  }
 }
 
 function keyPressed() {
-  if (key == ' ' && gameStarted == false) {
-    numberOfAsteroids += 1;
-    gameStarted = true;
-    ship.isAlive = true;
-    restarted = true;
-    reset();
-  } else if (key == ' ' && gameStarted == true) {
-    // console.log(gameStarted);
-    fireLasers();
-  } else if (keyCode == RIGHT_ARROW) {
-    ship.setRotation(0.1);
-  } else if (keyCode == LEFT_ARROW) {
-    ship.setRotation(-0.1);
-  } else if (keyCode == UP_ARROW || keyCode == '87') { // w
-    ship.boosting(true);
-  } else if (keyCode == DOWN_ARROW) {
-    if (gameStarted) {
-      if (paused) { paused = false; } else { paused = true; }
+  if (ship.isAlive == true) {
+    if (gameStarted == false) {
+      cheatSeq.push(keyCode);
+      if (cheatSeq.length > 7) {
+        cheatSeq = [];
+      }
+      console.log(cheatSeq);
     }
-  } else if (keyCode == 86) { // v
-    if (gameStarted) {
-      if (paused) { paused = false; } else { paused = true; }
+    if (key == ' ' && gameStarted == false || keyCode == 86 && gameStarted == false) { // space or v
+      numberOfAsteroids += 1;
+      gameStarted = true;
+      ship.isAlive = true;
+      restarted = true;
+      reset();
+    } else if (key == ' ' && gameStarted == true || keyCode == 221 && gameStarted == true) { // space or ]
+      fireLasers();
+    } else if (keyCode == 219) { // [
+      grabber.grabbing(true);
+    } else if (keyCode == RIGHT_ARROW) {
+      ship.setRotation(0.1);
+    } else if (keyCode == LEFT_ARROW) {
+      ship.setRotation(-0.1);
+    } else if (keyCode == UP_ARROW || keyCode == '87') { // w
+      ship.boosting(true);
+      fireJets.loop();
+    } else if (keyCode == DOWN_ARROW) {
+      ship.boosting(true);
+      fireJets.loop();
+    } else if (keyCode == 86) { // v
+      if (gameStarted) {
+        if (paused) { paused = false; } else { paused = true; }
+      }
+    } else if (keyCode == 70) { // f
+      var fs = fullscreen();
+      fullscreen(!fs);
+    } else if (keyCode == 82) { // r
+      console.log('r');
+      location.reload();
     }
+  } else {
+    location.reload();
   }
+}
+
+function cheats() {
+  numberOfAsteroids = 10;
+  laserRange = 100;
+  laserSize = 20;
+  laserType = 'SPREAD'
+  backgroundColor = [0,0,30];
 }
 
 // function touchStarted() {

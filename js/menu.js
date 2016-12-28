@@ -15,7 +15,7 @@ function Menu() {
   }
 
   this.gameOver = function(score) {
-    this.message = "GAME OVER MAN!!! GAME OVER!!!\n\nFINAL\n"+score;
+    this.message = "GAME OVER MAN!!! GAME OVER!!!\n\nPRESS ANY KEY TO START OVER.";
   }
 
   this.gameScore = function(score) {

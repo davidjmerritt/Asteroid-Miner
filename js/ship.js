@@ -41,6 +41,9 @@ function Ship() {
   this.update = function() {
     if (this.isBoosting) {
       this.boost();
+      tail.col = "white";
+    } else {
+      tail.col = "black";
     }
     this.pos.add(this.vel);
     this.vel.mult(0.99);

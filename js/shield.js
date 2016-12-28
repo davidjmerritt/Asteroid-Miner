@@ -6,7 +6,7 @@ function Shield() {
   this.heading = 0;
   this.rotation = 0;
   this.vel = createVector(0, 0);
-  this.col = "green";
+  this.col = "white";
 
   this.edges = function() {
     if (this.pos.x > width + this.r) {

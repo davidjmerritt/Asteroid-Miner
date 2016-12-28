@@ -26,7 +26,7 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 
 
 ### Features
-- Instructions
+- Added Instructions
 - Levels - Add 1 new asteroid per level
 - Score Counter
 - Hit Counter - Decrease size of ship on collision with asteroid hit - 3 hits Game over man!!!
@@ -48,9 +48,18 @@ Forked early after initial project commit from CodingRainbow/Asteroids project f
 - Added spread laser type
 - Added back gun laser type
 - Add shields to ship
-- Added ores: coal, iron, gold
+- Added ores: coal, iron, gold, diamond
+- Added ore-field for grabbing ores
+- Added decay to ores
+- Added ore tally menu
+- Added game over screen
+- Made asteroids bigger
+- Added sounds effects and music
 
 ### Future Changes
+- Add ability to craft combinations of ores to make new items
+- Add crafting ship
+- Add bosses after 8 levels
 - Power-ups spawn out of breaking up asteroids
 - Redesign shield break up animation
 - Running into asteroid with ship breaks asteroid
